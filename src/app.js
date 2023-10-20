@@ -28,7 +28,6 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-
 app.post('/upload', upload.single('file'), (req, res) => {
   const file = req.file;
   if (!file) {
