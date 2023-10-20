@@ -7,6 +7,8 @@ const path = require('path');
 const app = express();
 const port = 3000;
 
+app.use(express.static('public'));
+
 // Set up Multer
 const storage = multer.diskStorage({
   destination: './uploads',
@@ -23,45 +25,9 @@ if (!fs.existsSync('./uploads')) {
 }
 
 app.get('/', (req, res) => {
-  res.send(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <script>
-        // Place for your JavaScript functions to handle button clicks
-      </script>
-    </head>
-    <body>
-    <h2>Upload File</h2>
-    <form action="/upload" method="post" enctype="multipart/form-data">
-      <label for="file">Select file:</label>
-      <input type="file" id="file" name="file"><br><br>
-      <input type="submit" value="Upload"><br><br>
-    </form>
-    <!-- Adding Ethereum-related buttons here -->
-    <button id="store-proof-btn">Store Proof on Ethereum</button><br><br>
-    <button id="get-proof-btn">Get Proof from Ethereum</button><br><br>
-    <button id="connect-metamask-btn">Connect to MetaMask</button>
-    </body>
-    </html>
-  `);
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
-// app.get('/', (req, res) => {
-//   res.send(`
-//     <!DOCTYPE html>
-//     <html>
-//     <body>
-//     <h2>Upload File</h2>
-//     <form action="/upload" method="post" enctype="multipart/form-data">
-//       <label for="file">Select file:</label>
-//       <input type="file" id="file" name="file"><br><br>
-//       <input type="submit" value="Upload">
-//     </form>
-//     </body>
-//     </html>
-//   `);
-// });
 
 app.post('/upload', upload.single('file'), (req, res) => {
   const file = req.file;
