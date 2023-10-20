@@ -1,10 +1,6 @@
 async function connectMetaMask() {
-    let web3 = new Web3(window.etherium);
-}
-
-async function connectMetaMask() {
     // Initialize web3 instance
-    let web3 = new Web3(window.ethereum);
+    let web3 = new Web3(window.etherium);
 
     try {
         // Request account access
