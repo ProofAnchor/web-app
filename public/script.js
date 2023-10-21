@@ -111,6 +111,7 @@ async function storeProof() {
   console.log(documentHash)
   contract.methods.storeProof(documentHash).send({from: accounts[0]})
     .on('receipt', receipt => {
+      alert(`Document ${documentHash} successfully stored`)
       console.log(receipt);
     })
     .on('error', error => {
@@ -145,8 +146,9 @@ async function getProof() {
   try {
     const timestamp = await contract.methods.getProof(documentHash).call();
     console.log(timestamp)
-    document.getElementById('file-timestamp').textContent = convertUnixTimestamp(timestamp)
+    document.getElementById('file-timestamp').innerHTML = `File timestamp for <i>${documentHash}</i>: <b>${convertUnixTimestamp(timestamp)}</b>`
   } catch {
     alert('Document does not exist')
+    document.getElementById('file-timestamp').textContent = ''
   }
 }
