@@ -28,8 +28,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
+
 app.post('/upload', upload.single('file'), (req, res) => {
   const file = req.file;
+  console.log(file)
   if (!file) {
     return res.status(400).send('No file uploaded.');
   }
@@ -54,15 +56,20 @@ app.post('/upload', upload.single('file'), (req, res) => {
       fs.unlink(file.path, (err) => {
         if (err) throw err;
       });
-
-      return res.send(`File uploaded and hashed. Hash: ${fileHash}`);
+      // return res.send(`File uploaded and hashed. Hash: ${fileHash}`);
+      return res.json({fileHash})
     }
   });
 
+  
   // Catch any errors that happen while creating the readable stream (usually invalid names)
   input.on('error', (err) => {
     return res.status(500).send(`Error hashing file: ${err.message}`);
   });
+});
+
+app.get('/latestFileHash', (req, res) => {
+  return res.send({fileHash: latestFileHash});
 });
 
 app.listen(port, () => {
