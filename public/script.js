@@ -118,6 +118,19 @@ async function storeProof() {
     });
 }
 
+function convertUnixTimestamp(unixTimestamp) {
+  // Convert the timestamp to milliseconds
+  const milliseconds = unixTimestamp * 1000;
+
+  // Create a new Date object
+  const dateObject = new Date(milliseconds);
+
+  // Format the date
+  const humanReadableDate = dateObject.toLocaleString(); // converts to local date and time format
+
+  return humanReadableDate;
+}
+
 async function getProof() {
   if (!sessionStorage.getItem('fileHash')) {
     alert('No file found')
@@ -129,6 +142,11 @@ async function getProof() {
   }
 
   // const documentHash = '0x1a5792b0d70c21041f5e6fc9df90564d231b038616306b39e1c008eb43fb36a6'
-  const timestamp = await contract.methods.getProof(documentHash).call();
-  console.log(timestamp)
+  try {
+    const timestamp = await contract.methods.getProof(documentHash).call();
+    console.log(timestamp)
+    document.getElementById('file-timestamp').textContent = convertUnixTimestamp(timestamp)
+  } catch {
+    alert('Document does not exist')
+  }
 }

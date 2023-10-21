@@ -68,9 +68,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
   });
 });
 
-app.get('/latestFileHash', (req, res) => {
-  return res.send({fileHash: latestFileHash});
-});
+
 
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
