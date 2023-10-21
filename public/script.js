@@ -1,8 +1,8 @@
 let web3 = new Web3(window.ethereum);
-
 async function connectMetaMask() {
     // Initialize web3 instance
-    
+    let web3 = new Web3(window.ethereum);
+
 
     try {
         // Request account access
@@ -93,6 +93,8 @@ async function uploadFile(event) {
 
     if (result) {
       console.log("File uploaded, hash:", result.fileHash);
+      document.getElementById('display').textContent = 'File Hash: ' + result.fileHash
+      sessionStorage.setItem('fileHash', result.fileHash);
     } else {
       console.error("File upload failed:", result.message);
     }
@@ -102,12 +104,17 @@ async function uploadFile(event) {
 }
 
 
-async function storeProof(documentHash) {
+async function storeProof() {
   // const documentHash = '0x1a5792b0d70c21041f5e6fc9df90564d231b038616306b39e1c008eb43fb36a6';
+  if (!sessionStorage.getItem('fileHash')) {
+    alert('No file found')
+  }
+  let documentHash = sessionStorage.getItem('fileHash')
   if (!documentHash.startsWith('0x')) {
     documentHash = '0x' + documentHash;
   }
   const accounts = await web3.eth.getAccounts();
+  console.log(documentHash)
   contract.methods.storeProof(documentHash).send({from: accounts[0]})
     .on('receipt', receipt => {
       console.log(receipt);
@@ -117,10 +124,16 @@ async function storeProof(documentHash) {
     });
 }
 
-async function getProof(documentHash) {
+async function getProof() {
+  if (!sessionStorage.getItem('fileHash')) {
+    alert('No file found')
+  }
+
+  let documentHash = sessionStorage.getItem('fileHash')
   if (!documentHash.startsWith('0x')) {
     documentHash = '0x' + documentHash;
   }
+  
   // const documentHash = '0x1a5792b0d70c21041f5e6fc9df90564d231b038616306b39e1c008eb43fb36a6'
   const timestamp = await contract.methods.getProof(documentHash).call();
   console.log(timestamp)
