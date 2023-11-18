@@ -1,3 +1,5 @@
+# Deprecated
+
 # ProofAnchor
 
 ProofAnchor is a decentralized application that leverages the Ethereum and Filecoin blockchains to provide proof of existence for documents. Users can upload files to the application, which then creates a unique hash of each file and stores it on the blockchain, serving as immutable proof that the file existed at a certain point in time.
